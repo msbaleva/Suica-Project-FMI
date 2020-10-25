@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+ <head>
+ <meta charset="utf-8">
+ <style> body {text-align:center;}
+
+ </style>
+ <script src="suica.min.js"> </script>
+ 
+ <script>
+  function main(){
+  new Suica();
+	wGc = sphere([0,0,0],3.5).custom({color:[1,1,1]});
+    wGC = sphere([0,0,20],3.5).custom({color:[1,1,1]});
+	WGC = sphere([0,20,20],3.5).custom({color:[1,1,1]});
+	wgC = sphere([20,0,20],3.5).custom({color:[1,1,1]});
+	Wgc = sphere([20,20,0],3.5).custom({color:[1,1,1]});
+	WGc = sphere([0,20,0],3.5).custom({color:[1,1,1]});
+	wgc = sphere([20,0,0],3.5).custom({color:[1,1,1]});
+	WgC = sphere([20,20,20],3.5).custom({color:[1,1,1]});
+	cylinder([0,0,0],1,20).custom({color:[0,1,0]});
+	cylinder([0,20,0],1,20).custom({color:[0,1,0]});;
+	cylinder([20,0,0],1,20).custom({color:[0,1,0]});;
+	cylinder([20,20,0],1,20).custom({color:[0,1,0]});;
+	cylinder([0,0,0],1,20).custom({focus:[1,0,0],color:[0.8,0.4,0]});
+	cylinder([0,20,0],1,20).custom({focus:[1,0,0],color:[0.8,0.4,0]});
+	cylinder([0,20,20],1,20).custom({focus:[1,0,0],color:[0.8,0.4,0]});
+	cylinder([0,0,20],1,20).custom({focus:[1,0,0],color:[0.8,0.4,0]});
+	cylinder([0,0,0],1,20).custom({focus:[0,1,0],color:[0.7,0.7,0.7]});
+	cylinder([0,0,20],1,20).custom({focus:[0,1,0],color:[0.7,0.7,0.7]});
+	cylinder([20,0,20],1,20).custom({focus:[0,1,0],color:[0.7,0.7,0.7]});
+	cylinder([20,0,0],1,20).custom({focus:[0,1,0],color:[0.7,0.7,0.7]});
+	
+	// dead ends
+	cylinder([0.5,20,0],0.7,20).custom({color:[1,0,0]});
+	cylinder([20.5,0,0],0.7,20).custom({color:[1,0,0]});
+	cylinder([0.5,0,20],0.7,20).custom({focus:[0,1,0],color:[1,0,0]});
+	cylinder([20.5,0,0],0.7,20).custom({focus:[0,1,0],color:[1,0,0]});
+	
+	
+	///cylinder([0.5,0,0],0.7,20).custom({color:[0,1,1]});
+	//cylinder([20.5,20,0],0.7,20).custom({color:[0,1,1]});
+	///cylinder([0,0,0.5],0.7,20).custom({focus:[1,0,0],color:[0,1,1]});
+	//cylinder([0,20,0.5],0.7,20).custom({focus:[1,0,0],color:[0,1,1]});
+	///cylinder([0,20,20.5],0.7,20).custom({focus:[1,0,0],color:[0,1,1]});
+	///cylinder([0,0,20.5],0.7,20).custom({focus:[1,0,0],color:[0,1,1]});
+	//cylinder([0.5,0,0],0.7,20).custom({focus:[0,1,0],color:[0,1,1]});
+	///cylinder([20.5,0,20],0.7,20).custom({focus:[0,1,0],color:[0,1,1]});
+	
+	//second route
+	//cylinder([0,0,0.5],0.7,20).custom({focus:[1,0,0],color:[0,1,1]});
+	//cylinder([0.5,0,0],0.7,20).custom({focus:[0,1,0],color:[0,1,1]});
+	//cylinder([0,20,0.5],0.7,20).custom({focus:[1,0,0],color:[0,1,1]});
+	//cylinder([20.5,20,0],0.7,20).custom({color:[0,1,1]});
+	//cylinder([0,20,20.5],0.7,20).custom({focus:[1,0,0],color:[0,1,1]});
+	//first route
+	//cylinder([0,0,0.5],0.7,20).custom({focus:[1,0,0],color:[0,1,1]});
+	//cylinder([0.5,0,0],0.7,20).custom({color:[0,1,1]});
+	//cylinder([0,0,20.5],0.7,20).custom({focus:[1,0,0],color:[0,1,1]});
+	//cylinder([20.5,0,20],0.7,20).custom({focus:[0,1,0],color:[0,1,1]});
+	//cylinder([0,20,20.5],0.7,20).custom({focus:[1,0,0],color:[0,1,1]});
+	}
+ </script>
+ 
+ </head>
+ 
+ <body onload="main()">
+ <noscript>
+		Искаме JavaScript, но няма!
+	</noscript>
+	
+	<canvas width="1000" height="700" style="background-color: mintcream">
+		Искаме canvas, но няма!
+	</canvas>
+	<div id="wgc" class="label">вкз</div>
+	<div id="Wgc" class="label">Вкз</div>
+	<div id="WGc" class="label">ВКз</div>
+	<div id="wGc" class="label">вКз</div>
+	<div id="wgC" class="label">вкЗ</div>
+	<div id="WgC" class="label">ВкЗ</div>
+	<div id="WGC" class="label">ВКЗ</div>
+	<div id="wGc" class="label">вКз</div>
+ </body>
+</html>

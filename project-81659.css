@@ -1,0 +1,268 @@
+body
+{
+	width: 700px;
+	margin: auto;
+	padding: 30px;
+	background: linear-gradient(DarkTurquoise,Aquamarine,PowderBlue);
+	text-align: center;
+	font-family: 'Times New Roman', serif;
+	color: Black;
+    
+}
+
+div.menu
+{
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+	display:inline;
+	border:indigo dashed 1px;
+	margin:30px;
+	padding:7px;
+	text-align:center;
+    
+}
+
+
+div.page
+{
+
+	background: url('image.png') repeat-x mintcream;
+    width: 900px;
+	border:dashed teal 1.5px;
+	margin:3em -7em;
+	padding:3em;
+	-moz-border-radius: 5px;
+    border-radius: 25px;
+}
+
+div.part
+{
+	margin: 2em auto;
+	width:750px;
+	border: dashed 1px Teal;
+	padding: 17px ;
+	border-radius: 25px;
+	box-shadow: 5px 5px 10px SteelBlue ;
+	background: linear-gradient(DarkTurquoise,Aquamarine,LightCyan);
+}
+
+ul.menu li
+{
+	display:inline;
+	margin:2em auto;
+	padding:0.5em;
+	color:mintcream;
+}	
+
+a:link
+{
+	color:lightseagreen;
+	text-decoration:none;
+}
+a:hover 
+{
+	color:darkturquoise;
+}
+
+a:visited
+{
+	color: mediumseagreen;
+	
+}
+ul.menu 
+{
+	box-shadow: 5px  5px 10px SteelBlue ;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+	display:inline;
+	border:teal dashed 1px;
+	margin:auto;
+	padding:10px;
+	text-align:center;
+	background: linear-gradient(DarkTurquoise,Aquamarine,LightCyan);
+	cursor: pointer;
+}
+
+ul
+{
+	padding-left: 3em;
+	margin-left: 1em;
+	margin-right: 3em;
+	cursor: default;
+}
+
+li
+{
+	text-align: justify;
+	font-size: 1.2em;
+	padding:0.2em;
+	cursor: default;
+}
+
+hr
+{
+	border-top: 1px dashed Teal;
+	width:700px;
+	cursor: default;
+}
+
+h1
+{
+	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+	font-size: 3em;
+	margin-top:1.5em;
+	color: DarkTurquoise;
+	text-shadow: 3px 3px 5px SteelBlue;
+	text-transform:uppercase;
+	cursor: default;
+}
+
+h2
+{
+	margin: auto;
+	width:400px;
+	padding: 12px ;
+	color: mediumspringgreen;
+	text-shadow: 5px 5px 10px midnightblue;
+	border-bottom: 1px dashed teal;
+	text-transform:uppercase;
+	cursor: default;
+}
+
+h4
+{
+	font-size:1.2em;
+	color:mediumaquamarine;
+	width:350px;
+	margin:auto;
+	padding:5px;
+	border-top: 1px dashed teal;
+	border-bottom: 1px dashed teal;
+	cursor: default;
+}
+
+p
+{
+	margin: 1em;
+	padding: 0 15px;
+	text-indent:1em;
+	text-align: justify;
+	font-size: 1.2em;
+	cursor: default;
+}
+
+em
+{
+	font-weight: bold;
+	font-style: normal;
+	color: springgreen;
+	text-shadow: 2px 2px 5px midnightblue;
+	cursor: default;
+}
+
+canvas
+{
+	background-color: White;
+	border-radius: 10px;
+	margin: 0.5em auto 0 auto;
+	border: dashed 1px steelblue;
+	box-shadow: 0 0 25px 0px steelblue;
+	cursor: grab;
+}
+
+img
+{
+	display: block;
+	margin: auto;
+	border: dashed 1px teal;
+	border-radius:15px;
+}
+
+table
+{
+	alignment: center;
+	border: dashed 1px teal;
+	padding: 0.5em;
+	border-radius:15px;
+	cursor: default;
+}
+
+tr, td
+{
+	alignment: center;
+	border: dashed 1px teal;
+	padding: 0.5em;
+	background-color:mintcream;
+    height:2em;
+	cursor: default;
+}
+
+th:hover
+{
+	background-color: teal;
+	color:mintcream;
+	cursor: default;
+}
+
+th
+{
+	background-color:DeepSkyBlue ;
+	height:2em;
+	width:2em;
+	cursor: default;
+}
+
+div.button, div.counter
+{
+	border: dashed 1px indigo;
+	padding: 0.2em 1em;
+	margin: 1em;
+	background-color: DeepSkyBlue;
+	border-radius: 15px;
+	text-transform:uppercase;
+	position: relative;
+	display: inline;
+	color: indigo;
+	cursor: pointer;
+}
+
+div.button:hover, div.counter:hover
+{
+	color: deepskyblue;
+	background-color: indigo;
+}
+
+#mom
+{
+	color:crimson;
+}
+
+#dad
+{
+	color:royalblue;
+}
+
+#kid1
+{
+	color: darkmagenta;
+}
+
+#kid2
+{
+	color: limegreen;
+}
+
+#j
+{
+	color: olive;
+}
+
+#m
+{
+	color:salmon;
+}
+
+#k
+{
+	color:mediumvioletred;
+}

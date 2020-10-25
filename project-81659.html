@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+
+<head>
+	<meta charset="utf-8">
+	<title>Вълк, коза и зелка</title>
+
+	<script src="suica.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="project-81659.css">
+	
+	
+	<script>
+	    waves = [];
+		function main()
+		{
+			p = new Suica();
+			oxyz();
+			background([0.6, 0.9, 1]); 
+			orthographic(-50,50);
+			lookAt([0,0,50],[0,0,0],[0,1,0]);
+			// звуци
+			cabbageGetsEaten = new Audio('Biting Apple-SoundBible.com-415478302.wav');
+			goatGetsEaten = new Audio('Goat Bah-SoundBible.com-959734934.wav');
+			win = new Audio('Success-sound-effect.mp3');
+			
+			// сцена
+			river = cuboid([0,0,0],[420,600,1]).custom({color:[0.2,0.5,0.9]});
+			firstShore = cuboid([-260,0,0],[130,400,1]).custom({color:[0.2,0.6,0.4]});
+			secondShore = cuboid([260,0,0],[130,400,1]).custom({color:[0.2,0.6,0.4]});
+			
+			for(var i=0;i<50;i++)
+			{
+			 waves[i] = cylinder([random(-200,200),random(-300,300),1.5],3,random(15,80)).custom({color:[0.2,0.3,random(0.4,1)],focus:[0,1,0]});
+			 cylinder([random(-330,-230),random(-200,200),1.5],3,random(10,20)).custom({color:[0.2,random(0.4,1),0.3]});
+			 cylinder([random(230,330),random(-200,200),1.5],3,random(10,20)).custom({color:[0.2,random(0.4,1),0.3]});
+			}
+		    p.gl.canvas.addEventListener('mousedown',mouseDown,false);
+			p.gl.canvas.addEventListener('mouseup',mouseUp,false);
+			p.gl.canvas.addEventListener('mousemove',mouseMove,false);
+
+			//кумчо вълчо
+			wolf = group([
+			spheroid([0,0,0],[40,20,19.5]).custom({color:[0.5,0.5,0.5]}), //тяло
+			spheroid([0,0,3],[35,19,19]).custom({color:[0.45,0.45,0.45]}), //гръб
+			spheroid([0,0,7],[25,15,19]).custom({color:[0.4,0.4,0.4]}), //гръб
+			spheroid([40,0,24],[15,13,11]).custom({color:[0.5,0.5,0.5]}), //глава
+			spheroid([40,0,24],[15,12,10.5]).custom({color:[0.9,0.9,0.9]}), //гуша
+			spheroid([-45,0,-10],[4,4,40]).custom({color:[0.5,0.5,0.5],focus:[1,0,3]}), //опашка
+			cylinder([50,-6,20],2.8,2.8).custom({color:[1,1,1],focus:[1,0,0]}), // лява очна ябълка
+			cylinder([50,6,20],2.8,2.8).custom({color:[1,1,1],focus:[1,0,0]}), //дясна очна ябълка
+			sphere([40,-6,20],1.6).custom({color:[0,0,0]}), //ляв ирис
+			sphere([40,6,20],1.6).custom({color:[0,0,0]}), //десен ирис
+			cuboid([28,-8,-12],[6,6,24]).custom({color:[0.6,0.6,0.6]}), // ляв преден крак
+			cuboid([28,8,-12],[6,6,24]).custom({color:[0.6,0.6,0.6]}), //десен преден крак
+			cuboid([-20,-8,-12],[6,6,24]).custom({color:[0.5,0.5,0.5]}), // ляв заден крак
+			cuboid([-20,8,-12],[6,6,24]).custom({color:[0.5,0.5,0.5]}), //десен заден крак
+			spheroid([32,-8,-24],[8.4,5.2,4]).custom({color:[0.6,0.6,0.6]}), //лява предна лапа
+			spheroid([32,8,-24],[8.4,5.2,4]).custom({color:[0.6,0.6,0.6]}), //дясна предна лапа
+			spheroid([-32,-8,-24],[8.4,5.2,4]).custom({color:[0.5,0.5,0.5]}), //лява задна лапа
+			spheroid([-32,8,-24],[8.4,5.2,4]).custom({color:[0.5,0.5,0.5]}), //дясна задна лапа
+			cone([40,-5,30],8,25).custom({color:[0.5,0.5,0.5],focus:[0,-10,30]}), //ляво ухо
+			cone([40,5,30],8,25).custom({color:[0.5,0.5,0.5],focus:[0,10,30]}), //дясно ухо
+			cone([41.6,-4,18],4.8,16).custom({color:[0.8,0.7,0.7],focus:[0,-1,3]}), //ляво вътреушие
+			cone([41.6,4,18],4.8,16).custom({color:[0.8,0.7,0.7],focus:[0,1,3]}), //дясно вътреушие
+			spheroid([50,0,11.5],[8.4,5.2,4]).custom({color:[0.7,0.7,0.7]}), //муцуна
+			spheroid([55,0,11.4],[6,2,5.6]).custom({color:[0,0,0]}), //носле
+			]).custom({interactive: true});
+			wolf.center = [-260,100,55];
+			wolf.spin=Math.PI/5;
+			
+			// козичка
+			goat = group([
+			spheroid([0,0,0],[37,18,17]).custom({color:[0.8,0.4,0]}), //тяло
+			spheroid([0,0,-2],[37,17,17]).custom({color:[1,1,1]}), //коремче
+			spheroid([35,0,18],[14,12,11.5]).custom({color:[0.8,0.4,0.2]}), //глава
+			spheroid([40,0,8],[11.5,9,11]).custom({color:[1,1,1]}), //гуша
+			spheroid([-36,2,0],[4,4,8]).custom({color:[0.8,0.4,0.2],focus:[1,0,3]}), //опашка
+			cylinder([45,-6,16],2.8,2.8).custom({color:[1,1,1],focus:[1,0,0]}), // лява очна ябълка
+			cylinder([45,6,16],2.8,2.8).custom({color:[1,1,1],focus:[1,0,0]}), //дясна очна ябълка
+			sphere([46,-6,16],2.8).custom({color:[0,0,0]}), //ляв ирис
+			sphere([46,6,16],2.8).custom({color:[0,0,0]}), //десен ирис
+			cuboid([28,-8,-8],[6,4.4,12]).custom({color:[0.8,0.4,0.2]}), // ляв преден крак
+			cuboid([28,8,-8],[6,4.4,12]).custom({color:[0.8,0.4,0.2]}), //десен преден крак
+			cuboid([-20,-8,-8],[6,4.4,12]).custom({color:[0.8,0.4,0.2]}), // ляв заден крак
+			cuboid([-20,8,-8],[6,4.4,12]).custom({color:[0.8,0.4,0.2]}), //десен заден крак
+			cuboid([28,-8,-20],[6,4.4,12]).custom({color:[1,1,1]}), // ляв преден крак
+			cuboid([28,8,-20],[6,4.4,12]).custom({color:[1,1,1]}), //десен преден крак
+			cuboid([-20,-8,-20],[6,4.4,12]).custom({color:[1,1,1]}), // ляв заден крак
+			cuboid([-20,8,-20],[6,4.4,12]).custom({color:[1,1,1]}), //десен заден крак
+			spheroid([28,-8,-24],[4.9,4,4]).custom({color:[0,0,0]}), //ляво предно копито
+			spheroid([28,8,-24],[4.9,4,4]).custom({color:[0,0,0]}), //дясно предно копито
+			spheroid([-20,-8,-24],[4.9,4,4]).custom({color:[0,0,0]}), //ляво задно копито
+			spheroid([-20,8,-24],[4.9,4,4]).custom({color:[0,0,0]}), //дясно задно копито
+			cone([25,-4,30],4,24).custom({color:[0.8,0.6,0],focus:[-2,0,1]}), //ляв рог
+			cone([25,4,30],4,24).custom({color:[0.8,0.6,0],focus:[-2,0,1]}), //десен рог
+			spheroid([50,0,9],[4.4,4.4,3.2]).custom({color:[1,1,1],focus:[1,0,-1]}), //муцуна
+			spheroid([54,0,9],[1.2,1.6,1.6]).custom({color:[1,0.8,1],focus:[1,0,-1]}), //носле
+			spheroid([40,12,10],[7.5,4,4]).custom({color:[0.8,0.4,0],focus:[0,-1,0],spin:Math.PI/12}), //ляво ухо
+			spheroid([40,-12,10],[7.6,4,4]).custom({color:[0.8,0.4,0],focus:[0,-1,0],spin:Math.PI/12}), //дясно ухо
+			]).custom({interactive: true});
+			goat.center = [-260,0,55];
+			goat.spin=Math.PI/5;
+			
+			// лодка
+			boat = group([
+			a = cone([5,-5,5],45,110).custom({hollow:true,color: [0.4,0.1,0],focus:[0,-1,0],clipPlanes: [[1,0,0,1/10]]}),
+			b = cone([5,-5,5],45,110).custom({hollow:true,color: [0.4,0.1,0],focus:[0,1,0],clipPlanes: [[1,0,0,1/10]]}),
+			sameAs(a).custom({color: [0.6,0.3,0],mode: Suica.LINE}),
+			sameAs(a).custom({color: [0.6,0.3,0]}).custom({clipPlanes: [[1,0,-1/50,1/6]]}),
+			sameAs(b).custom({color: [0.6,0.3,0],mode: Suica.LINE}),
+			sameAs(b).custom({color: [0.6,0.3,0]}).custom({clipPlanes: [[1,0,-1/50,1/6]]})
+			]).custom({interactive: true});
+			boat.center = [-160,130,45];
+			boat.spin = -Math.PI/4;
+			
+            // лелка зелка
+			cabbage = group([
+			sphere([0,0,0],20).custom({color:[0,1,0]}),
+			cylinder([0,0,0],22,5).custom({color:[0,random(0.3,1),0],hollow:true,focus:[0,1,0]}),
+			cylinder([0,4,0],21,5).custom({color:[0,random(0.3,1),0],hollow:true,focus:[0,1,0]}),
+			cylinder([0,9,0],20,5).custom({color:[0,random(0.3,1),0],hollow:true,focus:[0,1,0]}),
+			cylinder([0,12,0],19,4).custom({color:[0,random(0.3,1),0],hollow:true,focus:[0,1,0]}),
+			cylinder([0,14,0],15,5).custom({color:[0,random(0.3,1),0],hollow:true,focus:[0,1,0]}),
+			cylinder([0,17,0],13,5).custom({color:[0,random(0.3,1),0],hollow:true,focus:[0,1,0]}),
+			cylinder([0,19,0],9,5).custom({color:[0,random(0.3,1),0],hollow:true,focus:[0,1,0]}),
+			cylinder([0,21,0],4,4).custom({color:[0,random(0.3,1),0],hollow:true,focus:[0,1,0]}),
+			sphere([7,0,1],7).custom({color:[0,1,0.4],hollow:true}),
+			sphere([9,0,1.2],4).custom({color:[0,1,0.6],hollow:true}),
+			]).custom({interactive: true});
+			cabbage.focus=[-1,0,1];
+			cabbage.spin=-Math.PI/2;
+		    cabbage.center = [-250,-100,55];
+			
+			// бай Иван
+			farmer=group([
+			spheroid([5,-45,30],[25,25,25]).custom({color:[1,0.8,0.1],focus:[1,0,-1]}),
+			spheroid([5,-45,40],[19,17,17]).custom({color:[1,0.8,0.1],focus:[1,0,-1]}),
+			]);
+			boat.add(farmer);
+			boat.merge();
+			cabbage.merge();
+			goat.merge();
+			wolf.merge();
+			p.nextFrame = riverFlow;
+			k=0.9;
+		}
+		
+		// анимация на реката
+		function riverFlow()
+		{
+		  	for (var i=0; i<50; i++)
+			{
+			if (waves[i].center[1]>-300)
+				{waves[i].center[1] -= 0.5;}
+			if(waves[i].center[1]<=-300) {waves[i].center[1]=250;}
+			}
+			
+		}
+        var obj = null;
+
+		// интерактивност при хващане на обект
+		function mouseDown(event)
+		{
+		    c=document.getElementsByTagName('canvas');
+			 c[0].style.cursor='grabbing';
+			x = event.clientX;
+			y = event.clientY;
+			obj = p.objectAtPoint(x,y);
+		}
+		current = 0;
+		carried=null;
+		dead=null;
+		
+		// интерактивност при пускане на обект
+		function mouseUp(event)
+		{
+		     c=document.getElementsByTagName('canvas');
+			 c[0].style.cursor='grab';
+			 // в случай на правилно решение
+		    if((current == 7) && (wolf.center[0]>0) && (goat.center[0]>0) && (cabbage.center[0] >0))
+			{
+			opa=document.getElementById('gameover');
+		    opa.style.display='block';
+		     opa.innerHTML = 'Браво! &#x263a;';
+			 win.play();
+			 f=document.getElementsByClassName('counter');
+			 f[0].style.backgroundColor='green';
+			 f[0].style.color='indigo';
+		  }
+		  
+			// проверки
+		    if(obj && obj==boat)
+			{
+			 current++;
+			 document.getElementById('cnt').innerHTML =document.getElementById('cnt') + Number(current);
+			 if(current > 7)
+			{
+			 f=document.getElementsByClassName('counter');
+			 f[0].style.backgroundColor='darkred';
+			 f[0].style.color='white';
+			 }
+			 
+			}
+		    else if(obj && obj!=boat)
+			{
+			 if(obj == carried) {carried = null;}
+			 else if((Math.abs(event.clientX-x - boat.center[0]) <=200) && (Math.abs(event.clientY-y - boat.center[1]) <=200))
+			 {
+			 obj.center[0] = boat.center[0]-15;
+			 obj.center[1]=boat.center[1]+20;
+			 carried=obj;
+			 }
+			}
+			obj = null;
+			// проверки дали някой не е изяден
+			if(((wolf.center[0]/goat.center[0]) > 0) && ((wolf.center[0]/boat.center[0]) < 0)) {dead=goat; eaten();}
+			else if(((cabbage.center[0]/goat.center[0]) > 0) && ((cabbage.center[0]/boat.center[0]) < 0)) {dead=cabbage;eaten();}
+		}
+		// интерактивност при движение на хванат обект
+		function mouseMove(event)
+		{
+			if (obj)
+			{
+			    if (obj==boat)
+			{
+				k -= (event.clientX-x)/300;
+				
+				if (k<0) k=0;
+				if (k>1) k=1;
+				
+				boat.center[0] = -160*k+(1-k)*160;
+				boat.center[1] = 130*k+(1-k)*(-130);
+				if(carried){
+				carried.center[0] = -175*k+(1-k)*145;
+				carried.center[1] = 150*k+(1-k)*(-110);
+				}
+			}
+			 else{
+				obj.center[0] += event.clientX-x;
+				obj.center[1] -= event.clientY-y;}
+			}
+			x = event.clientX;
+			y = event.clientY;
+		}
+		
+		// функция на бутона "Започни отначало"
+		function tryAgain()
+		{
+		    goat.focus=[0,0,1];
+			if(dead == goat){blood.visible=false;}
+			cabbage.visible=true;
+		    dead=null;
+			
+			document.getElementById('gameover').style.display='none';
+			cabbage.center = [-250,-100,55];
+			boat.center = [-160,130,45];
+			wolf.center = [-260,100,55];
+			goat.center = [-260,0,55];
+			current=0;
+			document.getElementById('cnt').innerHTML = Number(current);
+			 f=document.getElementsByClassName('counter');
+			 f[0].style.backgroundColor='deepskyblue';
+			 f[0].style.color='indigo';
+		}
+
+		// функция, ако някой е изяден
+		function eaten()
+		{
+		  opa=document.getElementById('gameover');
+		  opa.style.display='block';
+		  if(dead==goat)
+		  {
+		  goatGetsEaten.play();
+		  dead.focus=[0,1,0];
+		  blood =spheroid(dead.center,[30,20,10]).custom({color:[0.8,0,0]});
+		  opa.innerHTML = 'Опаа! Вълкът изяде козичката! &dagger; Цъкни  <b>&lceil;Започни отначало&rfloor;</b>, за да пробваш пак!';
+		  }
+		  if(dead==cabbage)
+		  {
+		  cabbageGetsEaten.play();
+		  cabbage.visible=false;
+		  opa.innerHTML = 'Опаа! Козичката изяде зелката! &dagger; Цъкни  <b>&lceil;Започни отначало&rfloor;</b>, за да пробваш пак!';
+		  }
+		}
+		
+		
+		// функция, скирваща и показваща инструкциите
+		function showInstructions()
+		{
+			var e = document.getElementById('howTo');
+			var f = document.getElementById('buttonHowTo');
+			if (e.style.display=='block')
+			{e.style.display='none'}
+			else
+			{e.style.display='block';}
+			
+			
+			if (e.style.display=='block')
+			{f.innerHTML='Скрий инструкции';}
+			else
+			{f.innerHTML='Покажи инструкции';}
+			
+		}
+		
+	
+		
+	</script>	
+</head>
+
+
+<body onload="main()">
+
+    <div class="page">
+	<h1>&there4; Вълк, коза и зелка &there4;</h1>
+	<h4> Проект ЕСО &loz; Мария Балева &loz; 81659 </h4>
+	<br><br>
+    
+	<ul class="menu">
+    <li><a href="#1">Загадки "Прекоси реката"</a></li>
+	<li><a href="#2">Вариации на загадката</a></li>
+	<li><a href="#3">Вълк, коза и зелка</a></li>
+	</ul>
+    <br><br><br>
+	<ul class="menu">
+	<li><a href="#4">Опитай сам</a></li>
+	<li><a href="#5">Решение на загдката</a></li>
+	<li><a href="#6">Подобни загадки</a></li>
+	<li><a href="#7">Решения</a></li>
+	<li><a href="#8">Източници</a></li>
+	</ul>
+	
+	<br><br><br><hr>
+	
+	<div class="part" id="1">
+		<h2>&there4; "Прекоси реката" &there4;</h2>
+		
+		<p>Логическите загадки са един прекрасен и забавен начин да раздвижим ума си. Макар често да изглеждат детски на пръв поглед, някои от тях могат силно да затруднят дори възрастни хора, достигнали въпрос за 2000 лева в известното шоу "Стани богат". <em>Вълкът, козата и зелето</em> е пример за такава загадка и всъщност е част от цяла поредица с такава тематика, известни като загадки "Прекоси реката".</p>
+
+		<p>Основната цел на тези загадки е проста: да се пренесат даден брой предмети от единия бряг на реката до другия с помощта на лодка, като най-често се изисква най-малък брой преминавания през реката.</p>
+		
+		<p>Сложността на загадката се изменя в зависимост от:</p>
+		
+		<ul>
+			<li> броя на предметите в задачата </li>
+			<li> броя и вида на предметите, които могат едновременно да са в лодката </li>
+			<li> броя и вида на предметите, които могат да останат заедно на едно място</li>
+		</ul>
+		
+		
+	</div>
+		
+    <hr>
+	<div class="part" id="2">
+		<h2>&there4; Вариации на загадката &there4;</h2>
+		<p>Първата документирана поява на този тип загадки е преди повече от 12 века. В латинския ръкопис <i>Propositiones ad Acuendos Juvenes</i> (Загадки за остър детски ум), чиито най-ранни копия датират от IX век, са поместени три такива главоблъсканици:</p>
+		
+		<ul>
+			<li> <i>Лисица, гъска и торба с боб</i>, която е много подобна на <em> Вълк, коза и зелка </em>, както и на <i>Лисица, кокошка и торба с жито</i>; </li>
+			<li> <i>Загадката за ревнивите съпрузи</i> и нейната прозиводна "Загадка за мисионерите и канибалите"; </li>
+			<li> <i>Propositio de viro et muliere ponderantibus plaustrum</i>, в която мъж и жена с еднакво тегло и две деца, тежащи наполовина колкото възрастните, трябва да прекосят реката в лодка, която може да издържи теглото на един възрастен човек. </li>
+		</ul>
+
+	</div>
+    <hr>
+	<div class="part" id="3">
+		<h2>&there4; Вълк, коза и зелка &there4;</h2>
+		<p>В този урок ние ще разгледаме може би най-известната от този тип загадки: </p> <p> <em style="margin-left:13em;"> Вълк, коза и зелка</em></p>
+		
+		<p> 
+		Бай Иван бил собственик на един добродушен, но все пак верен на природата си вълк, една симпатична и доста лакома козичка и една хрупкава прясна зелка. Един ден бай Иван решил, че иска да посети свой приятел в съседното село и да го почерпи със своята зелка. За нещастие вълкът и козичката не се разбирали много, ако бай Иван не бил наблизо да ги усмири, а и нямало как да останат сами вкъщи без някой да ги наглежда. Затова бай Иван решил, че най-удачно би било да ги вземе със себе си в съседното село. </p>
+		<p>
+		Пътят към съседното село минавал през голяма река, която бай Иван често преминавал с помощта на малка лодка. В лодката, обаче, се побирали само давама пътници. Тъй като само той можел да кара лодката, бай Иван можел да вземе само едно нещо със себе си за всяко преминаване от единия до другия бряг на реката. Освен това, бай Иван добре знаел, че нямало как да остави вълка и козата сами на единия бряг, защото вълкът щял да я изяде. Нямало и как да остави сама лакомата козичка със зелката, понеже тя щяла да изяде хрупкавия зеленчук. Тъй като бай Иван вече не бил и първа младост, най-разумно било да се опита да пренесе своите вълк, коза и зеле с възможно най-малко преминавания на реката.</p>
+		<p>Как е успял бай Иван да се справи с тази задача?</p>
+
+		<a href="Screenshot_1.png" target="_blank"><img src="Screenshot_1.png" width="400"></a>
+
+				
+	</div>
+	
+	<hr>
+	
+	<div class="part" id="4">
+		<h2>&there4; Опитай сам &there4;</h2>
+		<br>
+        <div id="buttonHowTo" class="button" onclick="showInstructions()">Покажи инструкции</div>
+		<div class="button" onclick="tryAgain()">Започни отначало</div>
+		<div class="counter">Брояч: <a id="cnt">0</a></div>
+		<div id="howTo" style="display:none;">
+		<p>Вълкът, козата и зелката се слагат и вадят в лодката, като се кликва върху тях с курсора и се привлачват в нея. Придвижването на лодката от единия бряг до другия също се осъществява с помощта на курсора.</p>
+        <p>Броячът отчита направените вече курсове, а при надминаване на минималния брой курсове за решаване на загадката се оцветява в червено. За да се възстанови, може да се започне ново решение с помощта на бутона <b>&lceil;Започни отначало&rfloor;</b>, които ще върне вълка, козата, зелката и лодката на първия бряг.</p>
+		
+		</div>
+		<br><br>
+		<div id="gameover" style="display=none;"></div>
+		<br>
+		
+		
+		<canvas width="650" height="400">
+		</canvas>
+	</div>
+	
+	<hr>
+    <div class="part" id="5">
+	<h2>&there4; Решение &there4;</h2>
+		
+		
+	<p> Загдката има повече от едно решение. Ето един вариант, в който на бай Иван ще са му нужни само 7 преминавания на реката. </p>
+	<p> В четвъртата колонка от табличката е представено визуално решението на задачата с помощта на куб, като вълкът се движи по оста <span style="color:gray">Oy (сива)</span> , козата по оста <span style="color:brown">Ox (кафява)</span>, а зелката по оста <span style="color:green">Oz (зелена)</span>. Стените, които са част от решението на загадката, са оцветени с синьо-зелено, а тези, водещи до изяждане на зелката или козата, в червено. Всеки връх е едно прекосяване на реката без случаите, в които бай Иван не е взел нито вълка, нито козата, нито зелката. Ако вече са пренесени на другия бряг, са обозначние с главни букви (<b>В</b>, <b>К</b>, <b>З</b>), в противен случай - с малки (<b>в</b>, <b>к</b>, <b>з</b>). </p>
+	<a href="start-cube.png" target="_blank"><img src="start-cube.png" width="200"></a>
+	<br>
+	<table width="100%">
+	   <tr>
+	    <th>Курс</th>
+		<th>Описание</th>
+		<th>Визуалнo решениe</th>
+		<th>Визуални решениe с куб</th>
+	 </tr>
+	  <tr>
+	    <td> 1 </td>
+		<td>Пренася козата</td>
+		<td><a href="route1-step1.png" target="_blank"><img src="route1-step1.png" height="100"></a></td>
+		<td><a href="route12-1.png" target="_blank"><img src="route12-1.png" height="100"></a></td>
+	  </tr>
+	  <tr>
+	    <td> 2 </td>
+	    <td>Връща се</td>
+		<td><a href="route1-step2.png" target="_blank"><img src="route1-step2.png" height="100"></a></td>
+		<td></td>
+	  </tr>
+	  <tr>
+	    <td> 3 </td>
+		<td>Пренася зелката</td>
+		<td><a href="route1-step3.png" target="_blank"><img src="route1-step3.png" height="100"></a></td>
+		<td><a href="route1-2.png" target="_blank"><img src="route1-2.png" height="100"></a></td>
+	  </tr>
+	  <tr>
+	    <td> 4 </td>
+		<td>Връща се с козата</td>
+		<td><a href="route1-step4.png" target="_blank"><img src="route1-step4.png" height="100"></a></td>
+		<td><a href="route1-3.png" target="_blank"><img src="route1-3.png" height="100"></a></td>
+	  </tr>
+	  <tr>
+	    <td> 5 </td>
+		<td>Пренася вълка</td>
+		<td><a href="route1-step5.png" target="_blank"><img src="route1-step5.png" height="100"></a></td>
+		<td><a href="route1-4.png" target="_blank"><img src="route1-4.png" height="100"></a></td>
+	  </tr>
+	  <tr>
+	    <td> 6 </td>
+		<td>Връща се</td>
+		<td><a href="route1-step6.png.jpg" target="_blank"><img src="route1-step6.png" height="100"></a></td>
+		<td></td>
+	  </tr>
+	  <tr>
+	    <td> 7 </td>
+		<td>Пренася козата</td>
+		<td><a href="route1-step7.png" target="_blank"><img src="route1-step7.png" height="100"></a></td>
+		<td><a href="route1-5.pn" target="_blank"><img src="route1-5.png" height="100"></a></td>
+	  </tr>
+	
+	</table>
+	<p>
+	Първата стъпка е да вземе козичката, защото в противен случай или козичката, или зелката ще бъдат изядени. След това той се връща на първия бряг и взима зелката. Ако остави зелката на този бряг с козата и се върне за вълка, тя ще го изяде. Решението е всъщност да <b> върне </b> козичкта обратно на първия бряг, да вземе вълка, да го закара при зелката и отново да се върне за козичката. Прекарвайки я на другия бряг, бай Иван е изпълнил задчата успешно и нито зелката, нито козичката са били изядени.</p>
+		
+
+	
+
+	</div>
+	<hr>
+	<div class="part" id="6">
+		<h2>&there4; Подобни загадки &there4;</h2>
+		<p style="margin-left:5em;">Ето няколко подобни загадки, които се решават по тази логика:</p>
+		<hr>
+	
+		<p>
+		<b>&lceil;За много начинаещи&rfloor;</b>
+		За разбралите или досетилите се за решението на <em> Вълк, коза и зелка</em>, тази задача би била тривиална. И все пак, за да затвърдим наученото, можете ли да се досетите за още едно решение на предната загадка със седем преминавания на реката?
+		</p>
+        <p> <a href="#beg">&rarr; Решение</a></p>
+		
+		
+		<hr>
+
+	
+		<p>
+		<b>&lceil;За начинаещи&rfloor;</b>
+		Семейство, състоящо се от двама родители и две деца, решило да иде на гости на баба и дядо. Бабата и дядото живеели в много стара коооперация. За да стигне до 17 етаж, където живеят бабата и дядото, семейството трябвало да използва много стар асансьор, който можел да издържи наведнъж или само един възрастен, или само две деца. 
+		</p>
+		<p> Когато влезли в кооперацията, един дядо точно слизал от асансьора. Децата културно го поздравили, а той на свой ред ги предупредил, че днес асансьорът бил в странно насторение и се движел по етажите само ако бъде натиснат от бутоните вътре в самия асансьор, т.е. той не можел да бъде извикан от съответен етаж. </p>
+        <p> Тъй като никой от семейството не искал да качва каквито и да е стълби, то то трябвало да измисли как да се качат всички до 17 етаж с възможно най-малко курсове на асансьора, като винаги тръгват от 1 етаж.</p>
+		<p> <a href="#adv">&rarr; Решение</a></p>
+		
+		<hr>
+		
+
+
+		<p>
+		<b>&lceil;За напреднали&rfloor;</b>
+		Бай Иван имал трима сина, Жоро, Миро и Киро, които живеели в съседния град със своите съпруги, Жени, Мира и Кира. Тъй като бай Иван имал рожден ден, те решили да го изненадат, като му идат на гости на село. За нещастие колата на Жоро се била развалила, Миро нямал кола, а Киро имал спортна кола с място за двама. Тъй като нямали друг избор, тримата братя решили, че ще е най-удачно да измислят начин, по който и шестимата да стигнат в селото с най-малък брой курсове, без да харчат излишно количество гориво. 
+		</p>
+		<p>
+		Дошъл денят на празника и всички се събрали в дома на Киро. Размишлявайки над плана си, обаче, братята скоро осъзнали, че имало един голям проблем: Никой брат не искал да остави жена си в компанията на друг мъж, дори и наоколо да е бай Иван или някоя от другите жени. Спорили, спорили, пък накрая се споразумяли и в крайна сметка намерили начин как да стигнат и шестимата до селото, без някоя жена да е останала в копанията на друг мъж.
+		</p>
+		<p> Как са успели всички да стигнат в селото? </p>
+        <p> Приемаме, че и мъжете, и жените имат шофьорски книжки.</p>
+		<p> <a href="#veryadv">&rarr; Решение</a></p>
+		
+		</div>
+		
+        <hr>
+		<div class="part" id="7">
+		<h2>&there4; Решения &there4;</h2>
+		
+		<p>
+		<a id="beg"><b>&lceil;За много начинаещи&rfloor;</b></a>
+		Концептуално решението е абсолютно същото. Разликата е в това, че след като сме занесли козичката, ще вземем не зелката, а вълка.
+		<table width="100%">
+	 <tr>
+	    <th>Курс</th>
+		<th>Описание</th>
+		<th>Визуалнo решениe</th>
+		<th>Визуални решениe с куб</th>
+	 </tr>
+	  <tr>
+	  
+	    <td> 1 </td>
+		<td>Пренася козата</td>
+		<td><a href="route1-step1.png" target="_blank"><img src="route1-step1.png" height="100"></a></td>
+		<td><a href="route12-1.png" target="_blank"><img src="route12-1.png" height="100"></a></td>
+	  </tr>
+	  <tr>
+	    <td> 2 </td>
+	    <td>Връща се</td>
+		<td><a href="route1-step2.png" target="_blank"><img src="route1-step2.png" height="100"></a></td>
+		<td></td>
+	  </tr>
+	  <tr>
+	    <td> 3 </td>
+		<td>Пренася вълка</td>
+		<td><a href="route2-step3.png" target="_blank"><img src="route2-step3.png" height="100"></a></td>
+		<td><a href="route2-2.png" target="_blank"><img src="route2-2.png" height="100"></a></td>
+	  </tr>
+	  <tr>
+	    <td> 4 </td>
+		<td>Връща се с козата</td>
+		<td><a href="route2-step4.png" target="_blank"><img src="route2-step4.png" height="100"></a></td>
+		<td><a href="route2-3.png" target="_blank"><img src="route2-3.png" height="100"></a></td>
+	  </tr>
+	  <tr>
+	    <td> 5 </td>
+		<td>Пренася зелката</td>
+		<td><a href="route2-step5.png" target="_blank"><img src="route2-step5.png" height="100"></a></td>
+		<td><a href="route2-4.png" target="_blank"><img src="route2-4.png" height="100"></a></td>
+	  </tr>
+	  <tr>
+	    <td> 6 </td>
+		<td>Връща се</td>
+		<td><a href="route1-step6.png" target="_blank"><img src="route1-step6.png" height="100"></a></td>
+		<td></td>
+	  </tr>
+	  <tr>
+	    <td> 7 </td>
+		<td>Пренася козата</td>
+		<td><a href="route1-step7.png" target="_blank"><img src="route1-step7.png" height="100"></a></td>
+		<td><a href="route2-5.png" target="_blank"><img src="route2-5.png" height="100"></a></td>
+	  </tr>
+	
+	</table>
+		</p>
+		<br>
+		<p>
+		<a id="adv"><b>&lceil;За начинаещи&rfloor;</b></a>
+		Тази загадка е, както може би вече сте се досетили, вариация на задачата <i>Propositio de viro et muliere ponderantibus plaustrum</i>. Ето примерно решение на загадката в 9 стъпки, като за означение ще ползваме <b id="mom">М</b> за майката, <b id="dad">Б</b> за бащата, <b id="kid1">Д1</b> и <b id="kid2">Д2</b> за децата</p>
+
+		
+		<table width="100%">
+	  
+	  <tr>
+	    <th> Курс </th>
+		<th>Описание</th>
+		<th>На I етаж</th>
+		<th>В асансьора</th>
+		<th>На XVI етаж</th>
+		
+	  </tr>
+	  <tr>
+	    <td> 1 </td>
+		<td>Двете деца се качват с асансьора</td>
+		<td><b style="color:crimson">M</b> <b id="dad">Б</b></td>
+		<td><b id="kid1">Д1</b> <b id="kid2">Д2</b> &uarr;</td>
+		<td></td>
+		
+	  </tr>
+	  <tr>
+	    <td> 2 </td>
+	    <td>Едното дете се връща на първия етаж</td>
+		<td><b id="mom">М</b> <b id="dad">Б</b></td>
+		<td><b id="kid1">Д1</b> &darr;</td>
+		<td><b id="kid2">Д2</b></td>
+		
+	  </tr>
+	  <tr>
+	    <td> 3 </td>
+		<td>Майката се качва с асансьора</td>
+		<td><b id="kid1">Д1</b> <b id="dad">Б</b></td>
+		<td><b id="mom">М</b> &uarr;</td>
+		<td><b id="kid2">Д2</b></td>
+		
+	  </tr>
+	  <tr>
+	    <td> 4 </td>
+		<td>Второто дете слиза на първия етаж</td>
+		<td><b id="kid1">Д1</b> <b id="dad">Б</b></td>
+		<td><b id="kid2">Д2</b> &darr;</td>
+		<td><b id="mom">М</b></td>
+		
+	  </tr>
+	  <tr>
+	    <td> 5 </td>
+		<td>Двете деца се качват с асансьора</td>
+		<td><b id="dad">Б</b></td>
+		<td><b id="kid1">Д1</b> <b id="kid2">Д2</b> &uarr;</td>
+		<td><b id="mom">М</b></td>
+		
+	  </tr>
+	  <tr>
+	    <td> 6 </td>
+		<td>Едното дете слиза на първия етаж</td>
+		<td><b id="dad">Б</b></td>
+		<td><b id="kid1">Д1</b> &darr;</td>
+		<td><b id="mom">М</b> <b id="kid2">Д2</b></td>
+		
+	  </tr>
+	  <tr>
+	    <td> 7 </td>
+		<td>Бащата се качва с асансьора</td>
+		<td><b id="kid1">Д1</b></td>
+		<td><b id="dad">Б</b> &uarr;</td>
+		<td><b id="mom">М</b> <b id="kid2">Д2</b></td>
+		
+	  </tr>
+	  <tr>
+	    <td> 8 </td>
+		<td>Второто дете слиза на първия етаж</td>
+		<td><b id="kid1">Д1</b></td>
+		<td><b id="kid2">Д2</b> &darr;</td>
+		<td><b id="mom">М</b> <b id="dad">Б</b></td>
+		
+	  </tr>
+	  <tr>
+	    <td> 9 </td>
+		<td>Двете деца се качват с асансьора</td>
+		<td></td>
+		<td><b id="kid1">Д1</b> <b id="kid2">Д2</b> &uarr;</td>
+		<td><b id="mom">М</b> <b id="dad">Б</b></td>
+		
+	  </tr>
+	</table>
+		<br>
+		<p>
+		
+		<a id="veryadv"><b>&lceil;За напреднали&rfloor;</b></a>
+		Тук всъщност става дума именно за <i>Загадката с ревнивите съпрузи</i>. Едно от най-късите решения на загадката се реализира в 11 стъпки.Без ограничение на общността първо за започнем с Киро, като имената на мъжете са означени с главни букви (<b id="j">Ж</b>, <b id="m">М</b>, <b id="k">К</b>), а на жените - с малки (<b id="j">ж</b>, <b id="m">м</b>, <b id="k">к</b>).
+		</p>
+		<table width="100%">
+	  
+	  <tr>
+	    <th> Курс </th>
+		<th>Описание</th>
+		<th>В града</th>
+		<th>Пътуващи</th>
+		<th>В селото</th>
+		
+	  </tr>
+	  <tr>
+	    <td> 1 </td>
+		<td>Киро и Кира отиват в селото, оставяйки Жоро и Жени и Миро и Мира в града</td>
+		<td><b id="j">Ж</b>ж <b id="m">М</b>м</td>
+		<td><b id="k">К</b><b id="k">к</b> &rarr;</td>
+		<td></td>
+		
+	  </tr>
+	  <tr>
+	    <td> 2 </td>
+	    <td>Кира остава в селото, а Киро се връща в града</td>
+		<td><b id="j">Ж</b><b id="j">ж</b> <b id="m">М</b><b id="m">м</b></td>
+		<td>&larr; <b id="k">К</b></td>
+		<td><b id="k">к</b></td>
+		
+	  </tr>
+	  <tr>
+	    <td> 3 </td>
+		<td>Жени и Мира отиват в селото, оставяйки братята в града</td>
+		<td><b id="j">Ж</b> <b id="m">М</b> <b id="k">К</b></td>
+		<td><b id="j">ж</b> <b id="m">м</b> &rarr;</td>
+		<td><b id="k">к</b></td>
+		
+	  </tr>
+	  <tr>
+	    <td> 4 </td>
+		<td>Кира се връща в града, а другите жени остават в селото</td>
+		<td><b id="j">Ж</b> <b id="m">М</b> <b id="k">К</b></td>
+		<td>&larr; <b id="k">к</b></td>
+		<td><b id="j">ж</b> <b id="m">м</b></td>
+		
+	  </tr>
+	  <tr>
+	    <td> 5 </td>
+		<td>Жоро и Миро отиват при жените си в селото, а Киро и Кира остават в селото</td>
+		<td><b id="k">К</b><b id="k">к</b></td>
+		<td><b id="j">Ж</b> <b id="m">М</b> &rarr;</td>
+		<td><b id="j">ж</b> <b id="m">м</b></td>
+		
+	  </tr>
+	  <tr>
+	    <td> 6 </td>
+		<td>Жоро и Жени се връщат в града, оставяйки Миро и Мира в селото</td>
+		<td><b id="k">К</b><b id="k">к</b></td>
+		<td>&larr; <b id="j">Ж</b><b id="j">ж</b></td>
+		<td><b id="m">М</b><b id="m">м</b></td>
+	  </tr>
+	  <tr>
+	    <td> 7 </td>
+		<td>Кира и Жени остават в града, а Киро и Жоро отиват в селото при Миро и Мира</td>
+		<td><b id="k">к</b> <b id="j">ж</b></td>
+		<td><b id="k">К</b> <b id="j">Ж</b> &rarr;</td>
+		<td><b id="m">М</b><b id="m">м</b></td>
+	  </tr>
+	  <tr>
+	    <td> 8 </td>
+		<td>Мира се връща в града при Кира и Жени</td>
+		<td><b id="k">к</b> <b id="j">ж</b></td>
+		<td>&larr; <b id="m">м</b></td>
+		<td><b id="j">Ж</b> <b id="m">М</b> <b id="k">К</b></td>
+		
+	  </tr>
+	  <tr>
+	    <td> 9 </td>
+		<td>Кира и Жени отиват в селото при мъжете</td>
+		<td><b id="m">м</b></td>
+		<td><b id="k">к</b> <b id="j">ж</b> &rarr;</td>
+		<td><b id="j">Ж</b> <b id="m">М</b> <b id="k">К</b></td>
+		
+	  </tr>
+	    <tr>
+	    <td> 10 </td>
+		<td>Миро се връща в града да вземе жена си</td>
+		<td><b id="m">м</b></td>
+		<td>&larr; <b id="m">М</b></td>
+		<td><b id="j">Ж</b><b id="j">ж</b> <b id="k">К</b><b id="k">к</b></td>
+		
+	  </tr>
+	    <tr>
+	    <td> 11 </td>
+		<td>Миро и Мира последни стигат за рождения ден на бай Иван</td>
+		<td></td>
+		<td><b id="m">М</b><b id="m">м</b> &rarr;</td>
+		<td><b id="j">Ж</b><b id="j">ж</b> <b id="k">К</b><b id="k">к</b></td>
+		
+	  </tr>
+	</table>
+		
+		<p>Това е най-късото решение, ако приемем, че жена е в компанията на мъж, дори и той да е в града/селото, а тя в колата; </p>
+		<p>Ако предположим, че мъжът не би се сърдил, ако например той е в селото, а жената пътува до града, където се намира някой от другите мъже, то биха могли да бъдат спестени още цели два курса:  </p>
+	
+	<table width="100%">
+	 <tr>
+	    <th> Курс </th>
+		<th>Описание</th>
+		<th>В града</th>
+		<th>Пътуващи</th>
+		<th>В селото</th>
+		
+	  </tr>
+	  <tr>
+	    <td> 1 </td>
+		<td>Киро и Кира отиват в селото, оставяйки Жоро и Жени и Миро и Мира в града</td>
+		<td><b id="j">Ж</b><b id="j">ж</b> <b id="m">М</b><b id="m">м</b></td>
+		<td><b id="k">К</b><b id="k">к</b> &rarr;</td>
+		<td></td>
+		
+	  </tr>
+	  <tr>
+	    <td> 2 </td>
+	    <td>Киро остава в селото, а Кира се връща до града</td>
+		<td><b id="j">Ж</b><b id="j">ж</b> <b id="m">М</b><b id="m">м</b></td>
+		<td>&larr; <b id="k">к</b></td>
+		<td><b id="k">К</b></td>
+		
+	  </tr>
+	  <tr>
+	    <td> 3 </td>
+		<td>Кира взима Мира и отиват до селото при Киро</td>
+		<td><b id="j">Ж</b><b id="j">ж</b> <b id="m">М</b></td>
+		<td><b id="k">к</b> <b id="m">м</b> &rarr;</td>
+		<td><b id="k">К</b></td>
+		
+	  </tr>
+	  <tr>
+	    <td> 4 </td>
+		<td>Киро и Кира остават в селото, а Мира се връща в града</td>
+		<td><b id="j">Ж</b><b id="j">ж</b> <b id="m">М</b></td>
+		<td>&larr; <b id="m">м</b></td>
+		<td><b id="k">К</b><b id="k">к</b></td>
+		
+	  </tr>
+	  <tr>
+	    <td> 5 </td>
+		<td>Миро и Мира отиват в селото при Киро и Кира</td>
+		<td><b id="j">Ж</b><b id="j">ж</b></td>
+		<td><b id="m">М</b><b id="m">м</b> &rarr;</td>
+		<td><b id="k">К</b><b id="k">к</b></td>
+		
+	  </tr>
+	  <tr>
+	    <td> 6 </td>
+		<td>Мира се връща до селото</td>
+		<td><b id="j">Ж</b><b id="j">ж</b></td>
+		<td>&larr; <b id="m">м</b></td>
+		<td><b id="m">М</b> <b id="k">К</b><b id="k">к</b></td>
+		
+	  </tr>
+	  <tr>
+	    <td> 7 </td>
+		<td>Мира взима Жени и отиват до селото</td>
+		<td><b id="j">Ж</b></td>
+		<td><b id="j">ж</b> <b id="m">м</b> &rarr;</td>
+		<td><b id="m">М</b> <b id="k">К</b><b id="k">к</b></td>
+		
+	  </tr>
+	  <tr>
+	    <td> 8 </td>
+		<td>Жени оставя Мира в селото и се връща в града при мъжа си</td>
+		<td><b id="j">Ж</b></td>
+		<td>&larr; <b id="j">ж</b></td>
+		<td><b id="m">М</b><b id="m">м</b> <b id="k">К</b><b id="k">к</b></td>
+		
+	  </tr>
+	  <tr>
+	    <td> 9 </td>
+		<td>Жоро и Жени последни стигат за рождения ден на бай Иван</td>
+		<td></td>
+		<td><b id="j">Ж</b><b id="j">ж</b> &rarr;</td>
+		<td><b id="m">М</b><b id="m">м</b> <b id="k">К</b><b id="k">к</b></td>
+		
+	  </tr>
+	</table>
+		<p> Въпросът тук е вярно ли е предположенеито ни, че меркантилността на братята да си спестят гориво от два курса ще надделее над ревността им.</p> 
+		</div>
+		<hr>
+		<div class="part" id="8">
+		<h2> &there4; Източници &there4; </h2>
+		<p>
+		<h3 style="margin-left:-20em;">Wikipedia:</h3>
+		<ul style="margin-left:5em;"> 
+		<li><a href="https://en.wikipedia.org/wiki/River_crossing_puzzle" target="_blank">Загадки "Прекоси реката"</a></li>
+		<li><a href="https://en.wikipedia.org/wiki/Fox,_goose_and_bag_of_beans_puzzle" target="_blank">Лисицата, гъската и торбата с боб</a></li>
+		<li><a href="https://en.wikipedia.org/wiki/Missionaries_and_cannibals_problem" target="_blank">Мисионерите и канибалите</a></li> </ul>
+		<h3 style="margin-left:-20em;">Картинки:</h3>
+		<ul style="margin-left:5em;">
+		<li><a href="https://farmville.fandom.com/wiki/Super_Cabbage" target="_blank">FarmVilleWiki</a>
+	    <span> Това изображение е предмет на авторски права от <a href=" https://www.zynga.com/" target="_blank">&copy; Zynga</a> .</span>
+		</li>
+		</ul>
+		<h3 style="margin-left:-20em;">Звук:</h3>
+	
+		<ul style="margin-left:5em;">
+		<li><a href="http://www.orangefreesounds.com/" target="_blank">Success Sound Effect</a>
+		</li>
+		<li><a href="http://www.soundbible.com/" target="_blank">Goat Bah Sound Effect</a>
+		</li>
+		<li><a href="http://www.soundbible.com/" target="_blank">Biting Apple Sound Effect</a>
+		</li>
+		
+		</ul>	
+		<div>License: The sound effect is permitted for non-commercial use under license “Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)
+        </div>
+		</p>
+		</div>
+		</div>
+		
+</body>
